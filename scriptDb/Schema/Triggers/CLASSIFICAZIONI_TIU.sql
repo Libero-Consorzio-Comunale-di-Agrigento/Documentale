@@ -1,0 +1,86 @@
+CREATE OR REPLACE TRIGGER CLASSIFICAZIONI_TIU
+/******************************************************************************
+ NOME:        CLASSIFICAZIONI_TIU
+ DESCRIZIONE: TRIGGER FOR CHECK DATA INTEGRITY
+                          CHECK UNIQUE INTEGRITY ON PK
+                          SET FUNCTIONAL INTEGRITY
+                       AT INSERT OR UPDATE ON TABLE CLASSIFICAZIONI
+ ECCEZIONI:  -20007, IDENTIFICAZIONE CHIAVE PRESENTE IN TABLE
+ ANNOTAZIONI: -
+ REVISIONI:
+ REV. DATA       AUTORE DESCRIZIONE
+ ---- ---------- ------ ------------------------------------------------------
+    0 __/__/____ __
+******************************************************************************/
+   BEFORE INSERT OR UPDATE ON CLASSIFICAZIONI
+FOR EACH ROW
+DECLARE
+   INTEGRITY_ERROR  EXCEPTION;
+   ERRNO            INTEGER;
+   ERRMSG           CHAR(200);
+   DUMMY            INTEGER;
+   FOUND            BOOLEAN;
+BEGIN
+   BEGIN  -- CHECK DATA INTEGRITY
+      --  COLUMN "ID_CLASSIFICAZIONE" USES SEQUENCE CLASS_SQ
+      IF :NEW.ID_CLASSIFICAZIONE IS NULL AND NOT DELETING THEN
+         SELECT CLASS_SQ.NEXTVAL
+           INTO :NEW.ID_CLASSIFICAZIONE
+           FROM DUAL;
+      END IF;
+      BEGIN  -- CHECK UNIQUE INTEGRITY ON PK OF "CLASSIFICAZIONI"
+         IF INTEGRITYPACKAGE.GETNESTLEVEL = 0 AND NOT DELETING THEN
+            DECLARE
+            CURSOR CPK_CLASSIFICAZIONI(VAR_ID_CLASSIFICAZIONE NUMBER) IS
+               SELECT 1
+                 FROM   CLASSIFICAZIONI
+                WHERE  ID_CLASSIFICAZIONE = VAR_ID_CLASSIFICAZIONE;
+            MUTATING         EXCEPTION;
+            PRAGMA EXCEPTION_INIT(MUTATING, -4091);
+            BEGIN
+               IF :NEW.ID_CLASSIFICAZIONE IS NOT NULL THEN
+                  OPEN  CPK_CLASSIFICAZIONI(:NEW.ID_CLASSIFICAZIONE);
+                  FETCH CPK_CLASSIFICAZIONI INTO DUMMY;
+                  FOUND := CPK_CLASSIFICAZIONI%FOUND;
+                  CLOSE CPK_CLASSIFICAZIONI;
+                  IF FOUND THEN
+                     ERRNO  := -20007;
+                     ERRMSG := 'Identificazione "'||
+                               :NEW.ID_CLASSIFICAZIONE||
+                               '" gia'' presente in CLASSIFICAZIONI. La registrazione  non puo'' essere inserita.';
+                     RAISE INTEGRITY_ERROR;
+                  END IF;
+               END IF;
+            EXCEPTION
+               WHEN MUTATING THEN NULL;  -- IGNORA CHECK SU UNIQUE PK INTEGRITY
+            END;
+         END IF;
+      END;
+      NULL;
+   END;
+   BEGIN  -- SET FUNCTIONAL INTEGRITY
+      IF INTEGRITYPACKAGE.GETNESTLEVEL = 0 THEN
+         INTEGRITYPACKAGE.NEXTNESTLEVEL;
+         BEGIN  -- GLOBAL FUNCTIONAL INTEGRITY AT LEVEL 0
+            /* NONE */ NULL;
+         END;
+         INTEGRITYPACKAGE.PREVIOUSNESTLEVEL;
+      END IF;
+      INTEGRITYPACKAGE.NEXTNESTLEVEL;
+      BEGIN  -- FULL FUNCTIONAL INTEGRITY AT ANY LEVEL
+         /* NONE */ NULL;
+      END;
+      INTEGRITYPACKAGE.PREVIOUSNESTLEVEL;
+   END;
+EXCEPTION
+   WHEN INTEGRITY_ERROR THEN
+        INTEGRITYPACKAGE.INITNESTLEVEL;
+        RAISE_APPLICATION_ERROR(ERRNO, ERRMSG);
+   WHEN OTHERS THEN
+        INTEGRITYPACKAGE.INITNESTLEVEL;
+        RAISE;
+END;
+/* END TRIGGER: CLASSIFICAZIONI_TIU */
+/
+
+

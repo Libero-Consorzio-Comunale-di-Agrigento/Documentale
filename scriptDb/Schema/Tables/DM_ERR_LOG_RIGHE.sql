@@ -1,0 +1,25 @@
+CREATE TABLE DM_ERR_LOG_RIGHE
+(
+  SEQUENZA        NUMBER                        NOT NULL,
+  ID_ERR_LOG      NUMBER                        NOT NULL,
+  AZIONE          VARCHAR2(4000 BYTE),
+  DESCRIZIONE     VARCHAR2(4000 BYTE),
+  EXECUTION_TIME  NUMBER,
+  DATA            DATE,
+  TAG_FASE        VARCHAR2(50 BYTE),
+  LIVELLO         NUMBER                        NOT NULL,
+  CLASSEJAVA      VARCHAR2(200 BYTE),
+  METODOJAVA      VARCHAR2(100 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

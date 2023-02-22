@@ -1,0 +1,131 @@
+CREATE OR REPLACE PROCEDURE P_AGGIORNA_DATI(P_AREA IN VARCHAR2, P_CM IN VARCHAR2, P_DATA IN VARCHAR2) IS
+TIPO_DOC            NUMBER;
+OLDDOC              NUMBER;
+ALIAS_V             VARCHAR2(30);
+NOMETABELLA         VARCHAR2(30);
+d_testo             VARCHAR2(4000);
+d_new_testo         VARCHAR2(4000);
+d_cursor            INTEGER;
+d_rows_processed    INTEGER;
+PART1               VARCHAR2(4000);
+PART2               VARCHAR2(4000);
+CONTATORE           NUMBER;
+CONTATORE_2         NUMBER;
+C_CLOB              CLOB;
+F_TEXT              CLOB;
+VALORE              VARCHAR2(4000);
+CURSOR C_DOCUMENTI(P_TIPO_DOC NUMBER, P_OLDDOC NUMBER)
+IS
+SELECT ID_DOCUMENTO, DATA_AGGIORNAMENTO
+  FROM DOCUMENTI
+ WHERE ID_TIPODOC = P_TIPO_DOC
+   AND ID_DOCUMENTO <= P_OLDDOC
+   AND DATA_AGGIORNAMENTO > TO_DATE(P_DATA,'DD/MM/YYYY')
+ ORDER BY 1 ASC;
+CURSOR C_CAMPI(V_AREA VARCHAR2, V_CM VARCHAR2)
+IS
+SELECT DM.DATO DATO, D.TIPO TIPO, D.FORMATO_DATA FORMATO_DATA
+ FROM DATI_MODELLO DM,
+      DATI D
+WHERE DM.AREA = V_AREA
+  AND DM.CODICE_MODELLO = V_CM
+  AND D.AREA = DM.AREA_DATO
+  AND D.DATO = DM.DATO
+  AND NVL(DM.IN_USO,'Y') = 'Y';
+CURSOR C_CAMPI_N(V_AREA VARCHAR2, V_CM VARCHAR2)
+IS
+SELECT DM.DATO DATO, D.TIPO TIPO
+ FROM DATI_MODELLO DM,
+      DATI D
+WHERE DM.AREA = V_AREA
+  AND DM.CODICE_MODELLO = V_CM
+  AND D.AREA = DM.AREA_DATO
+  AND D.DATO = DM.DATO
+  AND D.TIPO IN ('D','N')
+  AND NVL(DM.IN_USO,'Y') = 'Y';
+CURSOR C_CAMPI_CLOB(V_AREA VARCHAR2, V_CM VARCHAR2)
+IS
+SELECT DM.DATO DATO
+ FROM DATI_MODELLO DM,
+      DATI D
+WHERE DM.AREA = V_AREA
+  AND DM.CODICE_MODELLO = V_CM
+  AND D.AREA = DM.AREA_DATO
+  AND D.DATO = DM.DATO
+  AND D.TIPO = 'S'
+  AND NVL(DM.IN_USO,'Y') = 'Y';
+BEGIN
+   SELECT T.ID_TIPODOC, UPPER(A.ACRONIMO||'_'||T.ALIAS_MODELLO)
+     INTO TIPO_DOC, NOMETABELLA
+     FROM TIPI_DOCUMENTO T,
+          AREE A
+    WHERE T.AREA_MODELLO = P_AREA
+      AND T.NOME = P_CM
+      AND A.AREA = T.AREA_MODELLO
+      AND A.ACRONIMO IS NOT NULL
+      AND T.ALIAS_MODELLO IS NOT NULL;
+    IF (NOMETABELLA IS NULL) THEN
+        RAISE_APPLICATION_ERROR('-20999',  'Nome tabella non presente (Area: '||P_AREA||' - Modello: '||P_CM||')');
+    END IF;
+    d_new_testo := 'SELECT NVL(MAX(ID_DOCUMENTO),-1) FROM '||NOMETABELLA;
+    EXECUTE IMMEDIATE d_new_testo into OLDDOC;
+    IF (OLDDOC = NULL) THEN
+        OLDDOC := -1;
+    END IF;
+    CONTATORE := 0;
+    CONTATORE_2 := 0;
+    FOR V_DOCUMENTI IN C_DOCUMENTI(TIPO_DOC, OLDDOC ) LOOP
+        F_TEXT := '';
+        CONTATORE := CONTATORE + 1;
+        PART1 := 'UPDATE '||NOMETABELLA||' SET ';
+        FOR V_CAMPI IN C_CAMPI(P_AREA, P_CM ) LOOP
+            PART1 := PART1||V_CAMPI.DATO ;
+            IF (V_CAMPI.TIPO = 'D') THEN
+                PART1 := PART1||'= TO_DATE(:'||V_CAMPI.DATO||','''||REPLACE (V_CAMPI.FORMATO_DATA, 'hh:', 'hh24:')||'''), ';
+             ELSE
+                PART1 := PART1||'= :'||V_CAMPI.DATO||', ';
+            END IF;
+            PART2 := ', ';
+        END LOOP;
+        d_new_testo := PART1||' FULL_TEXT = :FULL_TEXT WHERE ID_DOCUMENTO = '||V_DOCUMENTI.ID_DOCUMENTO;
+        d_cursor := DBMS_SQL.OPEN_CURSOR;
+        DBMS_SQL.PARSE( d_cursor, d_new_testo, dbms_sql.native );
+        FOR V_CAMPI_N IN C_CAMPI_N(P_AREA, P_CM ) LOOP
+            VALORE := F_VALORE_CAMPO_VER(V_DOCUMENTI.ID_DOCUMENTO,V_CAMPI_N.DATO);
+            IF (NVL(VALORE,'-') <> '-') THEN
+                IF (NVL(F_TEXT,'-') <> '-') THEN
+                    F_TEXT := F_TEXT||CHR(13)||VALORE;
+                ELSE
+                     F_TEXT := VALORE;
+                END IF;
+            END IF;
+            IF (V_CAMPI_N.TIPO = 'N') THEN
+                DBMS_SQL.BIND_VARIABLE(d_cursor,':'||V_CAMPI_N.DATO,TO_NUMBER(VALORE));
+             ELSE
+                DBMS_SQL.BIND_VARIABLE(d_cursor,':'||V_CAMPI_N.DATO,VALORE);
+            END IF;
+        END LOOP;
+        FOR V_CAMPI_CLOB IN C_CAMPI_CLOB(P_AREA, P_CM ) LOOP
+            C_CLOB := F_VALORE_CAMPO_CLOB(V_DOCUMENTI.ID_DOCUMENTO,V_CAMPI_CLOB.DATO);
+            F_TEXT := F_TEXT||CHR(13)||C_CLOB;
+            DBMS_SQL.BIND_VARIABLE(d_cursor,':'||V_CAMPI_CLOB.DATO,C_CLOB);
+        END LOOP;
+        DBMS_SQL.BIND_VARIABLE(d_cursor,':FULL_TEXT',F_TEXT);
+        d_rows_processed := DBMS_SQL.EXECUTE( d_cursor );
+        DBMS_SQL.CLOSE_CURSOR( d_cursor );
+        IF (CONTATORE >= 1000) THEN
+            CONTATORE_2 := CONTATORE_2 + 1;
+            COMMIT;
+            CONTATORE := 0;
+        END IF;
+    END LOOP;
+    COMMIT;
+   EXCEPTION
+     WHEN NO_DATA_FOUND THEN
+       NULL;
+     WHEN OTHERS THEN
+       -- Consider logging the error and then re-raise
+       RAISE_APPLICATION_ERROR(-20999,d_new_testo);
+END P_AGGIORNA_DATI;
+/
+

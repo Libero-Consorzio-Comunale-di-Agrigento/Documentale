@@ -1,0 +1,203 @@
+CREATE OR REPLACE FUNCTION F_IMPORTA_DATI(
+   AREA_IN           IN     VARCHAR2,
+   AREA_OUT          IN     VARCHAR2,
+   DATO_OUT          IN     VARCHAR2,
+   DOMINIO_OUT       IN     VARCHAR2,
+   TIPO_INS          IN     VARCHAR2,
+   SOTTO_AREE        IN     VARCHAR2,
+   UTENTE_AGG        IN     VARCHAR2)
+RETURN NUMBER
+IS
+   CURSOR C_DATI_TUTTI (VAR_AREA_OUT VARCHAR2,VAR_DATO_OUT VARCHAR2,VAR_DOMINIO_OUT VARCHAR2) IS
+      SELECT DATO, TIPO, DOMINIO, DOMINIO_FORMULA, DOMINIO_VISUALIZZA, LUNGHEZZA,DECIMALI,
+             NOTE, OPZIONI, FORMATO_DATA, LABEL, TIPO_LOG, SENZA_SALVATAGGIO, SENZA_AGGIORNAMENTO,
+             TESTO_MAIUSCOLO, ACRONIMO_DATO
+      FROM DATI
+      WHERE AREA = VAR_AREA_OUT
+       AND DATO LIKE '%'||VAR_DATO_OUT||'%' AND (DOMINIO LIKE '%'||VAR_DOMINIO_OUT||'%' OR VAR_DOMINIO_OUT IS NULL);
+   R_DT  C_DATI_TUTTI%ROWTYPE;
+   CURSOR C_DATI_SEL (VAR_AREA_OUT VARCHAR2,VAR_DATO_OUT VARCHAR2) IS
+      SELECT DATO, TIPO,DOMINIO, DOMINIO_FORMULA, DOMINIO_VISUALIZZA, LUNGHEZZA, DECIMALI,
+             NOTE, OPZIONI, FORMATO_DATA, LABEL, TIPO_LOG, SENZA_SALVATAGGIO, SENZA_AGGIORNAMENTO,
+             TESTO_MAIUSCOLO, ACRONIMO_DATO
+      FROM DATI
+      WHERE AREA = VAR_AREA_OUT AND DATO = VAR_DATO_OUT;
+   R_DS  C_DATI_SEL%ROWTYPE;
+   CURSOR C_AREE (VAR_AREA VARCHAR2,VAR_AREA_ST VARCHAR2) IS
+      SELECT AREA
+      FROM AREE
+      WHERE AREA LIKE VAR_AREA
+      UNION
+      SELECT AREA
+      FROM AREE
+      WHERE AREA LIKE VAR_AREA_ST;
+   R_AR  C_AREE%ROWTYPE;
+   NUM_DATI         NUMBER;
+   NUM_AREE         NUMBER;
+   NESIST           NUMBER;
+   CINSTR           CLOB;
+   RESULT           NUMBER(1) := 0;
+BEGIN
+   IF ((AREA_IN != AREA_OUT) OR (SOTTO_AREE = 'S')) THEN
+     IF (SOTTO_AREE = 'S') THEN
+       OPEN C_AREE(AREA_IN,AREA_IN||'.%');
+      ELSE
+       OPEN C_AREE(AREA_IN,AREA_IN);
+      END IF;
+      NUM_AREE:=0;
+      LOOP
+         BEGIN
+           FETCH C_AREE INTO R_AR;
+           EXIT WHEN C_AREE%NOTFOUND;
+         END;
+         NUM_AREE:=NUM_AREE + 1;
+         IF (TIPO_INS = 'T') THEN
+           NUM_DATI:=0;
+           OPEN C_DATI_TUTTI(AREA_OUT,DATO_OUT,DOMINIO_OUT);
+           LOOP
+             FETCH C_DATI_TUTTI INTO R_DT;
+             EXIT WHEN C_DATI_TUTTI%NOTFOUND;
+             NUM_DATI:= NUM_DATI + 1;
+             BEGIN
+               SELECT COUNT(1)
+               INTO NESIST
+               FROM DATI
+               WHERE AREA = R_AR.AREA AND DATO = R_DT.DATO;
+               EXCEPTION WHEN OTHERS THEN
+                 raise_application_error (-20999,'RICERCA DATI DA IMPORTARE (AREA,DATO): ('||R_AR.AREA||','||R_DT.DATO||') '||SQLERRM);
+             END;
+             IF (NESIST > 0) THEN
+               BEGIN
+                   UPDATE DATI SET
+                    TIPO = R_DT.TIPO,
+                    DOMINIO = R_DT.DOMINIO,
+                    DOMINIO_FORMULA = R_DT.DOMINIO_FORMULA,
+                    LUNGHEZZA = R_DT.LUNGHEZZA,
+                    DECIMALI = R_DT.DECIMALI,
+                    NOTE = R_DT.NOTE,
+                    OPZIONI = R_DT.OPZIONI,
+                    DOMINIO_VISUALIZZA=R_DT.DOMINIO_VISUALIZZA,
+                    FORMATO_DATA = R_DT.FORMATO_DATA,
+                    LABEL = R_DT.LABEL,
+                    TIPO_LOG = R_DT.TIPO_LOG,
+                    SENZA_SALVATAGGIO = R_DT.SENZA_SALVATAGGIO,
+                    SENZA_AGGIORNAMENTO = R_DT.SENZA_AGGIORNAMENTO,
+                    TESTO_MAIUSCOLO = R_DT.TESTO_MAIUSCOLO,
+                    ACRONIMO_DATO = R_DT.ACRONIMO_DATO,
+                    DATA_AGGIORNAMENTO = SYSDATE,
+                    UTENTE_AGGIORNAMENTO = UTENTE_AGG
+                   WHERE AREA = R_AR.AREA AND DATO = R_DT.DATO;
+                   EXCEPTION WHEN OTHERS THEN
+                     raise_application_error (-20998,'IMPOSSIBILE AGGIORNARE IL DATO (AREA,DATO):('||R_AR.AREA||','||R_DT.DATO||') '||SQLERRM);
+               END;
+              ELSE
+                BEGIN
+                 INSERT INTO DATI
+                    (AREA,DATO,TIPO,DOMINIO, DOMINIO_FORMULA, DOMINIO_VISUALIZZA,LUNGHEZZA,
+                     DECIMALI,NOTE,OPZIONI,FORMATO_DATA,LABEL,TIPO_LOG,SENZA_SALVATAGGIO,SENZA_AGGIORNAMENTO,
+                     TESTO_MAIUSCOLO, ACRONIMO_DATO, DATA_AGGIORNAMENTO,UTENTE_AGGIORNAMENTO)
+                 VALUES
+                    (R_AR.AREA, R_DT.DATO, R_DT.TIPO, R_DT.DOMINIO, R_DT.DOMINIO_FORMULA, R_DT.DOMINIO_VISUALIZZA,
+                     R_DT.LUNGHEZZA, R_DT.DECIMALI, R_DT.NOTE, R_DT.OPZIONI, R_DT.FORMATO_DATA, R_DT.LABEL, R_DT.TIPO_LOG,
+                     R_DT.SENZA_SALVATAGGIO, R_DT.SENZA_AGGIORNAMENTO, R_DT.TESTO_MAIUSCOLO, R_DT.ACRONIMO_DATO, SYSDATE,UTENTE_AGG);
+                 EXCEPTION WHEN OTHERS THEN
+                     raise_application_error (-20997,'IMPOSSIBILE INSERIRE IL DATO (AREA,DATO):('||R_AR.AREA||','||R_DT.DATO||') '||SQLERRM);
+                END;
+              END IF;
+              SELECT ISTRUZIONI_COMPILAZIONE
+                INTO CINSTR
+               FROM DATI
+               WHERE AREA = AREA_OUT AND DATO = R_DT.DATO;
+              UPDATE DATI
+                 SET ISTRUZIONI_COMPILAZIONE = CINSTR
+               WHERE AREA = R_AR.AREA AND DATO = R_DT.DATO;
+            END LOOP;
+           CLOSE C_DATI_TUTTI;
+         ELSE
+           NUM_DATI:=0;
+           OPEN C_DATI_SEL(AREA_OUT,DATO_OUT);
+           LOOP
+             FETCH C_DATI_SEL INTO R_DS;
+             EXIT WHEN C_DATI_SEL%NOTFOUND;
+             NUM_DATI:= NUM_DATI + 1;
+             BEGIN
+               SELECT COUNT(1)
+                INTO NESIST
+                FROM DATI
+               WHERE AREA = R_AR.AREA AND DATO = R_DS.DATO;
+               EXCEPTION WHEN OTHERS THEN
+                 raise_application_error (-20996,'RICERCA DATI DA IMPORTARE (AREA,DATO): ('||R_AR.AREA||','||R_DS.DATO||') '||SQLERRM);
+             END;
+             IF (NESIST > 0) THEN
+                BEGIN
+                 UPDATE DATI SET
+                    TIPO = R_DS.TIPO,
+                    DOMINIO = R_DS.DOMINIO,
+                    DOMINIO_FORMULA = R_DS.DOMINIO_FORMULA,
+                    DOMINIO_VISUALIZZA=R_DS.DOMINIO_VISUALIZZA,
+                    LUNGHEZZA = R_DS.LUNGHEZZA,
+                    DECIMALI = R_DS.DECIMALI,
+                    NOTE = R_DS.NOTE,
+                    OPZIONI = R_DS.OPZIONI,
+                    FORMATO_DATA = R_DS.FORMATO_DATA,
+                    LABEL = R_DS.LABEL,
+                    TIPO_LOG = R_DS.TIPO_LOG,
+                    SENZA_SALVATAGGIO = R_DS.SENZA_SALVATAGGIO,
+                    SENZA_AGGIORNAMENTO = R_DS.SENZA_AGGIORNAMENTO,
+                    TESTO_MAIUSCOLO = R_DS.TESTO_MAIUSCOLO,
+                    ACRONIMO_DATO = R_DS.ACRONIMO_DATO,
+                    DATA_AGGIORNAMENTO = SYSDATE,
+                    UTENTE_AGGIORNAMENTO = UTENTE_AGG
+                  WHERE AREA = R_AR.AREA AND DATO = R_DS.DATO;
+                 EXCEPTION WHEN OTHERS THEN
+                 raise_application_error (-20995,'IMPOSSIBILE AGGIORNARE IL DATO (AREA,DATO):('||R_AR.AREA||','||R_DS.DATO||') '||SQLERRM);
+               END;
+             ELSE
+              BEGIN
+               INSERT INTO DATI
+                    (AREA,DATO,TIPO,DOMINIO,DOMINIO_FORMULA,DOMINIO_VISUALIZZA,LUNGHEZZA,
+                     DECIMALI,NOTE,OPZIONI,FORMATO_DATA,LABEL,TIPO_LOG,SENZA_SALVATAGGIO,SENZA_AGGIORNAMENTO,
+                     TESTO_MAIUSCOLO, ACRONIMO_DATO,DATA_AGGIORNAMENTO,UTENTE_AGGIORNAMENTO)
+               VALUES
+                    (R_AR.AREA,R_DS.DATO,R_DS.TIPO,R_DS.DOMINIO,R_DS.DOMINIO_FORMULA,R_DS.DOMINIO_VISUALIZZA,R_DS.LUNGHEZZA,
+                      R_DS.DECIMALI,R_DS.NOTE,R_DS.OPZIONI,R_DS.FORMATO_DATA,R_DS.LABEL,R_DS.TIPO_LOG,
+                      R_DS.SENZA_SALVATAGGIO, R_DS.SENZA_AGGIORNAMENTO, R_DS.TESTO_MAIUSCOLO, R_DS.ACRONIMO_DATO, SYSDATE,UTENTE_AGG);
+               EXCEPTION WHEN OTHERS THEN
+                 raise_application_error (-20994,'IMPOSSIBILE INSERIRE IL DATO (AREA,DATO):('||R_AR.AREA||','||R_DS.DATO||') '||SQLERRM);
+              END;
+             END IF;
+              SELECT ISTRUZIONI_COMPILAZIONE
+                INTO CINSTR
+               FROM DATI
+               WHERE AREA = AREA_OUT
+                 AND DATO = R_DS.DATO;
+              UPDATE DATI
+                 SET ISTRUZIONI_COMPILAZIONE = CINSTR
+               WHERE AREA = R_AR.AREA
+                 AND DATO = R_DS.DATO;
+            END LOOP;
+           CLOSE C_DATI_SEL;
+         END IF;
+      END LOOP;
+      CLOSE C_AREE;
+      BEGIN
+        IF NUM_AREE = 0 THEN
+         raise_application_error (-20993,'AREA INESISTENTE'||SQLERRM);
+        END IF;
+      END;
+      BEGIN
+        IF NUM_DATI = 0 THEN
+         raise_application_error (-20992,'DATI SELEZIONATI INESISTENTI (AREA,DATO): ('||AREA_OUT||','||DATO_OUT||') '||SQLERRM);
+        END IF;
+      END;
+      RESULT:=1;
+      COMMIT;
+   END IF;
+   RETURN RESULT;
+EXCEPTION WHEN OTHERS THEN
+      ROLLBACK;
+      RAISE;
+      RETURN NULL;
+END;
+/
+

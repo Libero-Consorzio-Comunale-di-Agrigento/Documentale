@@ -1,0 +1,25 @@
+CREATE OR REPLACE FUNCTION F_VALORE_IDCAMPO (P_DOC number,P_ID_CAMPO number)
+RETURN VARCHAR2 IS
+/*  BY MMA*/
+   S_VALORE     VARCHAR2(4000);
+   N_CAMPO         NUMBER(20);
+   N_TIPODOC     NUMBER(10);
+ BEGIN
+        SELECT NVL(DBMS_LOB.SUBSTR(VALORE_CLOB, 4000), NVL(TO_CHAR(VALORE_DATA, nvl(REPLACE(formato_data,'hh:','hh24:'),'dd/mm/yyyy')),TO_CHAR(VALORE_NUMERO) ))
+          INTO S_VALORE
+          FROM VALORI,campi_documento,dati_modello, dati
+         WHERE ID_DOCUMENTO = P_DOC
+           AND valori.ID_CAMPO = P_ID_CAMPO
+           AND campi_documento.id_campo = valori.ID_CAMPO
+           AND campi_documento.id_campo = dati_modello.id_campo
+           AND dati_modello.AREA_DATO = dati.area
+           AND dati_modello.dato = dati.dato;
+       RETURN S_VALORE;
+    EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+       RETURN NULL;
+      WHEN OTHERS THEN
+       RETURN NULL;
+ END  F_VALORE_IDCAMPO;
+/
+

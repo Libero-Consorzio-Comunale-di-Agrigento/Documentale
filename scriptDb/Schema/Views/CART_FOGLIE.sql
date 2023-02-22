@@ -1,0 +1,17 @@
+CREATE OR REPLACE FORCE VIEW CART_FOGLIE
+(PARENTID, NODEID, TEXT, URL, TOOLTIP, 
+ CUSTOM_IMAGE, DEFAULT_IMAGE, CUSTOM_STYLE, COMPETENZA, ID_CARTELLA, 
+ ID_OGGETTO)
+BEQUEATH DEFINER
+AS 
+SELECT  'C'||l1.ID_CARTELLA PARENTID, TIPO_OGGETTO||ID_OGGETTO NODEID, c.NOME TEXT,
+TO_CHAR(NULL)  URL, TO_CHAR(NULL)  TOOLTIP, /*'folder.gif' */ TO_CHAR(NULL) CUSTOM_IMAGE,
+TO_CHAR(NULL) DEFAULT_IMAGE, TO_CHAR(NULL)  CUSTOM_STYLE ,
+C.TIPO COMPETENZA, l1.ID_CARTELLA, ID_OGGETTO FROM LINKS l1, cartelle c, documenti d, modelli m
+WHERE tipo_oggetto = 'C'
+and c.id_cartella=l1.id_oggetto
+and c.id_documento_profilo = d.id_documento
+and d.id_tipodoc=m.id_tipodoc
+and m.tipo_uso not in  ('F','V');
+
+

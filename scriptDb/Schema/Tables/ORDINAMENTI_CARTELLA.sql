@@ -1,0 +1,25 @@
+CREATE TABLE ORDINAMENTI_CARTELLA
+(
+  ID_ORDINAMENTOCARTELLA  NUMBER(10)            NOT NULL,
+  ID_TIPODOC              NUMBER(10)            NOT NULL,
+  SEQ                     NUMBER(2)             NOT NULL,
+  TIPO_OBJ                VARCHAR2(1 BYTE)      NOT NULL,
+  CRITERIO                VARCHAR2(2000 BYTE)   NOT NULL,
+  DATA_AGGIORNAMENTO      DATE                  NOT NULL,
+  UTENTE_AGGIORNAMENTO    VARCHAR2(8 BYTE)      NOT NULL,
+  TIPO_ORDINAMENTO        VARCHAR2(4 BYTE)      DEFAULT 'ASC'                 NOT NULL,
+  LUNGHEZZA_CRITERIO      NUMBER                DEFAULT 50                    NOT NULL,
+  TIPO_CRITERIO           VARCHAR2(1 BYTE)      DEFAULT 'S'                   NOT NULL
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

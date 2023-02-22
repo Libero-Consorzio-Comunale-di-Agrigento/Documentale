@@ -1,0 +1,25 @@
+CREATE TABLE CONNESSIONI
+(
+  DSN          VARCHAR2(50 BYTE)                NOT NULL,
+  ISTANZA_AD4  VARCHAR2(10 BYTE),
+  DRIVER       VARCHAR2(100 BYTE),
+  CONNESSIONE  VARCHAR2(500 BYTE),
+  UTENTE       VARCHAR2(50 BYTE),
+  PASSWD       VARCHAR2(50 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

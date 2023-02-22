@@ -1,0 +1,82 @@
+CREATE OR REPLACE FUNCTION F_ICONA_WAREA (
+   P_ID_DOCUMENTO     IN       NUMBER,
+   P_ID_TIPODOC       IN       NUMBER,
+   P_NUM_TAG          IN       VARCHAR2,
+   P_JDMS_LINK_SN     IN       VARCHAR2,
+   P_ICONA_DEFAULT    IN       VARCHAR2,
+   P_SRC_PATH         IN       VARCHAR2  DEFAULT 'N',
+   P_ID_CARTELLA        IN       VARCHAR2  DEFAULT '')
+   RETURN VARCHAR2
+IS
+   A_CONTROLLA_TD   BOOLEAN := FALSE;
+   A_EXPR           JDMS_LINK.ICONA_EXP%TYPE;
+   A_ICONA          JDMS_LINK.ICONA%TYPE;
+   A_ICONA_RET      TIPI_DOCUMENTO.ICONA%TYPE;
+   A_RET            ICONE.NOME%TYPE;
+BEGIN
+   IF P_JDMS_LINK_SN='S' THEN
+      BEGIN
+         SELECT ICONA_EXP , ICONA
+           INTO A_EXPR, A_ICONA
+           FROM JDMS_LINK
+          WHERE ID_TIPODOC=P_ID_TIPODOC AND TAG=P_NUM_TAG;
+         IF (A_EXPR IS NULL) AND (A_ICONA IS NULL) THEN
+             A_CONTROLLA_TD:=TRUE;
+         END IF;
+      EXCEPTION WHEN NO_DATA_FOUND THEN
+         A_CONTROLLA_TD:=TRUE;
+      END;
+   END IF;
+   IF (P_JDMS_LINK_SN='N' OR A_CONTROLLA_TD=TRUE) AND NVL(P_NUM_TAG,'0')='0' THEN
+      BEGIN
+         SELECT ICONA_EXP, ICONA
+           INTO A_EXPR, A_ICONA
+           FROM TIPI_DOCUMENTO
+          WHERE ID_TIPODOC=P_ID_TIPODOC;
+      EXCEPTION WHEN NO_DATA_FOUND THEN
+         RAISE_APPLICATION_ERROR(-20999,'Errore in F_ICONA_WAREA. TipoDoc ('||P_ID_TIPODOC||') non trovato');
+      END;
+   END IF;
+   IF A_EXPR IS NULL THEN
+      IF A_ICONA IS NULL THEN
+         A_ICONA_RET := P_ICONA_DEFAULT;
+      ELSE
+         A_ICONA_RET := A_ICONA;
+      END IF;
+   ELSE
+      BEGIN
+       IF length(P_ID_CARTELLA) > 0 THEN
+        A_EXPR := REPLACE(A_EXPR,':idCartProvenienza',P_ID_CARTELLA);
+       END IF;
+       A_EXPR := GDM_Binding(A_EXPR,P_ID_DOCUMENTO);
+      EXCEPTION WHEN OTHERS THEN
+         RAISE_APPLICATION_ERROR(-20999,'Errore in F_ICONA_WAREA. Errore in GDM_Binding('||A_EXPR||','||P_ID_DOCUMENTO||'). Errore: '||sqlerrm);
+      END;
+      BEGIN
+         EXECUTE IMMEDIATE A_EXPR INTO A_ICONA_RET;
+      EXCEPTION WHEN OTHERS THEN
+         RAISE_APPLICATION_ERROR(-20999,'Errore in F_ICONA_WAREA. Errore in esecuzione '||A_EXPR);
+      END;
+   END IF;
+   IF A_ICONA_RET <> P_ICONA_DEFAULT THEN
+      BEGIN
+         SELECT A_ICONA_RET || '/' || NOME
+           INTO A_RET
+           FROM ICONE
+          WHERE ICONA=A_ICONA_RET;
+      EXCEPTION WHEN NO_DATA_FOUND THEN
+         RAISE_APPLICATION_ERROR(-20999,'Errore in F_ICONA_WAREA. Non Esiste su tabella ICONA il valore '||A_ICONA_RET);
+       END;
+   ELSE
+      A_RET := A_ICONA_RET;
+   END IF;
+   IF  A_RET IS NULL THEN
+       A_RET := P_ICONA_DEFAULT;
+   END IF;
+   IF P_SRC_PATH = 'S' THEN
+     A_RET := 'jdms/common/icone/'||A_RET;
+   END IF;
+   RETURN A_RET;
+END;
+/
+

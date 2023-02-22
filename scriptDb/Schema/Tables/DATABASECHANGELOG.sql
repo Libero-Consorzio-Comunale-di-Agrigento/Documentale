@@ -1,0 +1,33 @@
+CREATE TABLE DATABASECHANGELOG
+(
+  ID             VARCHAR2(255 BYTE)             NOT NULL,
+  AUTHOR         VARCHAR2(255 BYTE)             NOT NULL,
+  FILENAME       VARCHAR2(255 BYTE)             NOT NULL,
+  DATEEXECUTED   TIMESTAMP(6)                   NOT NULL,
+  ORDEREXECUTED  INTEGER                        NOT NULL,
+  EXECTYPE       VARCHAR2(10 BYTE)              NOT NULL,
+  MD5SUM         VARCHAR2(35 BYTE),
+  DESCRIPTION    VARCHAR2(255 BYTE),
+  COMMENTS       VARCHAR2(255 BYTE),
+  TAG            VARCHAR2(255 BYTE),
+  LIQUIBASE      VARCHAR2(20 BYTE),
+  CONTEXTS       VARCHAR2(255 BYTE),
+  LABELS         VARCHAR2(255 BYTE),
+  DEPLOYMENT_ID  VARCHAR2(10 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

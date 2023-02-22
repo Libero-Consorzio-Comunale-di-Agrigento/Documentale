@@ -1,0 +1,38 @@
+CREATE TABLE AMV_GUIDE
+(
+  GUIDA             VARCHAR2(8 BYTE)            NOT NULL,
+  SEQUENZA          NUMBER(2)                   NOT NULL,
+  ALIAS             VARCHAR2(6 BYTE)            NOT NULL,
+  TITOLO            VARCHAR2(20 BYTE),
+  TITOLO_AL1        VARCHAR2(20 BYTE),
+  TITOLO_AL2        VARCHAR2(20 BYTE),
+  TITOLO_BREVE      VARCHAR2(9 BYTE),
+  TITOLO_BREVE_AL1  VARCHAR2(9 BYTE),
+  TITOLO_BREVE_AL2  VARCHAR2(9 BYTE),
+  LETTERA           VARCHAR2(1 BYTE),
+  LETTERA_AL1       VARCHAR2(1 BYTE),
+  LETTERA_AL2       VARCHAR2(1 BYTE),
+  VOCE_GUIDA        VARCHAR2(8 BYTE),
+  VOCE_MENU         VARCHAR2(8 BYTE),
+  VOCE_RIF          VARCHAR2(8 BYTE),
+  PROPRIETA         VARCHAR2(1 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+COMMENT ON TABLE AMV_GUIDE IS 'GUID - Voci Guida ';
+
+
+

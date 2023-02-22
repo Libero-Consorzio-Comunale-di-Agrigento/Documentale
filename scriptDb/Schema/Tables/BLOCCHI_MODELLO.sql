@@ -1,0 +1,27 @@
+CREATE TABLE BLOCCHI_MODELLO
+(
+  AREA                    VARCHAR2(200 BYTE)    NOT NULL,
+  CODICE_MODELLO          VARCHAR2(50 BYTE)     NOT NULL,
+  BLOCCO                  VARCHAR2(250 BYTE)    NOT NULL,
+  AREA_BLOCCO             VARCHAR2(200 BYTE)    NOT NULL,
+  CONDIZIONI_LEGAME       VARCHAR2(4000 BYTE),
+  CONDIZIONI_NAVIGAZIONE  NUMBER(2)             DEFAULT 1                     NOT NULL,
+  ORDINAMENTO             VARCHAR2(4000 BYTE),
+  AGGIUNGI                VARCHAR2(4000 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

@@ -1,0 +1,25 @@
+CREATE TABLE DR$GDM$ELBT_FULL_TEXT_CTX$N
+(
+  NLT_DOCID  NUMBER(38),
+  NLT_MARK   CHAR(1 BYTE)                       NOT NULL, 
+  PRIMARY KEY
+  (NLT_DOCID)
+  ENABLE VALIDATE
+)
+ORGANIZATION INDEX
+PCTTHRESHOLD 50
+TABLESPACE GDM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

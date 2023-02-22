@@ -1,0 +1,21 @@
+CREATE TABLE KEY_WORD
+(
+  TESTO       VARCHAR2(240 BYTE)                NOT NULL,
+  LINGUA      VARCHAR2(1 BYTE)                  NOT NULL,
+  TRADUZIONE  VARCHAR2(2000 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+COMMENT ON TABLE KEY_WORD IS 'KEWO - Tabella dei testi tradotti';
+
+
+

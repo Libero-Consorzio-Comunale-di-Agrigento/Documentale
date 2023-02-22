@@ -1,0 +1,130 @@
+CREATE OR REPLACE PACKAGE BODY GDM_QUERY AS
+    FUNCTION CREA_QUERY(A_AREA VARCHAR2, A_MODELLO VARCHAR2, A_NOME_QUERY VARCHAR2, A_FILTRO VARCHAR2, A_UTENTE VARCHAR2, A_ID_CARTELLA_PADRE NUMBER DEFAULT NULL)
+    RETURN NUMBER
+    IS
+    BEGIN
+        RETURN CREA_QUERY(A_AREA , A_MODELLO , A_NOME_QUERY , A_FILTRO , A_UTENTE ,  A_ID_CARTELLA_PADRE, 0);
+    END;
+    FUNCTION CREA_QUERY(A_AREA VARCHAR2, A_MODELLO VARCHAR2, A_NOME_QUERY VARCHAR2, A_FILTRO VARCHAR2, A_UTENTE VARCHAR2, A_ID_CARTELLA_PADRE NUMBER DEFAULT NULL, A_CREA_RECORD_ORIZZONTALE NUMBER)
+    RETURN NUMBER
+    IS
+        A_ID_QUERY                  QUERY.ID_QUERY%TYPE;
+        A_CR                        DOCUMENTI.CODICE_RICHIESTA%TYPE;
+        A_ID_LINK                   LINKS.ID_LINK%TYPE;
+        A_NOME_QUERY_EFFETTIVO      QUERY.NOME%TYPE;
+        A_ID_PROFILO                DOCUMENTI.ID_DOCUMENTO%TYPE;
+        A_ID_CAMPONOME              CAMPI_DOCUMENTO.ID_CAMPO%TYPE;
+        A_NOMETAB                   VARCHAR2(200);
+        A_RET_CHAR                  VARCHAR2(4000);
+    BEGIN
+       SELECT QRY_SQ.NEXTVAL,
+              decode(nvl(A_ID_CARTELLA_PADRE,0),0,NULL,LINK_SQ.NEXTVAL)
+         INTO A_ID_QUERY,A_ID_LINK
+         FROM DUAL;
+       A_CR := TO_CHAR(A_ID_QUERY * -1);
+       A_NOME_QUERY_EFFETTIVO := A_NOME_QUERY;
+       IF NVL(A_NOME_QUERY_EFFETTIVO,' ')=' ' THEN
+           A_NOME_QUERY_EFFETTIVO := 'Query '||A_ID_QUERY;
+       ELSE
+           IF LENGTH(A_NOME_QUERY_EFFETTIVO)>100 THEN
+              A_NOME_QUERY_EFFETTIVO := SUBSTR(A_NOME_QUERY_EFFETTIVO,1,99);
+           END IF;
+       END IF;
+       BEGIN
+            SELECT F_CAMPO('NOME',MODELLI.ID_TIPODOC)
+              INTO A_ID_CAMPONOME
+              FROM MODELLI
+             WHERE CODICE_MODELLO=A_MODELLO AND AREA=A_AREA;
+            IF NVL(A_ID_CAMPONOME,0)<>0 THEN
+               GDM_PROFILO.ADDCAMPO(A_AREA ,A_MODELLO , 'NOME',TO_CLOB(A_NOME_QUERY_EFFETTIVO));
+            END IF;
+        EXCEPTION WHEN OTHERS THEN
+            RAISE_APPLICATION_ERROR(-20999,'Errore in recupero/creazione valore per campo NOME del modello. Errore: '||sqlerrm);
+        END;
+       BEGIN
+           A_ID_PROFILO:=GDM_PROFILO.CREA_DOCUMENTO(A_AREA , A_MODELLO, A_CR, A_UTENTE,A_CREA_RECORD_ORIZZONTALE);
+       EXCEPTION WHEN OTHERS THEN
+              RAISE_APPLICATION_ERROR(-20999,'Errore in creazione documento. Errore: '||sqlerrm);
+       END;
+       BEGIN
+           INSERT INTO QUERY
+           (ID_QUERY, NOME, TIPO,FILTRO,ID_DOCUMENTO_PROFILO,DATA_AGGIORNAMENTO,UTENTE_AGGIORNAMENTO)
+           VALUES
+           (A_ID_QUERY,A_NOME_QUERY_EFFETTIVO,'U',A_FILTRO,A_ID_PROFILO,sysdate,A_UTENTE);
+       EXCEPTION WHEN OTHERS THEN
+               RAISE_APPLICATION_ERROR(-20999,'Errore in inserimento tabella query. Errore: '||sqlerrm);
+       END;
+       IF NVL(A_ID_CARTELLA_PADRE,0)<>0 THEN
+           GDM_CARTELLE.INSERISCI_OGGETTO(A_ID_CARTELLA_PADRE,A_ID_QUERY,'Q',A_UTENTE);
+       END IF;
+       BEGIN
+           GDM_COMPETENZA.GDM_ALLINEA_COMP_CQ_DOC(A_ID_QUERY,A_ID_PROFILO,A_UTENTE,'Q');
+       EXCEPTION WHEN OTHERS THEN
+               RAISE_APPLICATION_ERROR(-20999,'Errore allineamento competenze Query-Documento. Errore: '||sqlerrm);
+       END;
+          --Cerco di inserire il valore NOME di dafault
+      /* BEGIN
+            SELECT F_CAMPO('NOME',MODELLI.ID_TIPODOC),F_NOME_TABELLA(A_AREA,A_MODELLO)
+              INTO A_ID_CAMPONOME,A_NOMETAB
+              FROM MODELLI
+             WHERE CODICE_MODELLO=A_MODELLO AND AREA=A_AREA;
+            IF NVL(A_ID_CAMPONOME,0)<>0 THEN
+               IF LENGTH(NVL(A_NOMETAB,''))>0 AND NVL(A_CREA_RECORD_ORIZZONTALE,0)<>0  THEN
+                  --E' orizzontale
+                  BEGIN
+                    EXECUTE IMMEDIATE 'UPDATE '||A_NOMETAB||' SET NOME = :NOME WHERE ID_DOCUMENTO = '||A_ID_PROFILO USING A_NOME_QUERY_EFFETTIVO ;
+                    A_RET_CHAR := F_FULL_TEXT_HORIZ(A_ID_PROFILO,A_NOMETAB);
+                  EXCEPTION WHEN OTHERS THEN
+                    RAISE_APPLICATION_ERROR(-20999,'Errore in update valore per campo NOME del modello in tabella orizzontale '||A_NOMETAB||'. Errore: '||sqlerrm);
+                  END;
+               ELSE
+                  IF LENGTH(NVL(A_NOMETAB,''))=0 THEN
+                     --E' verticale
+                     BEGIN
+                        INSERT INTO VALORI
+                        (ID_VALORE,ID_DOCUMENTO,ID_CAMPO,VALORE_STRINGA,VALORE_CLOB,DATA_AGGIORNAMENTO,UTENTE_AGGIORNAMENTO)
+                        VALUES
+                        (VALO_SQ.NEXTVAL,A_ID_PROFILO,A_ID_CAMPONOME,UPPER(A_NOME_QUERY_EFFETTIVO),A_NOME_QUERY_EFFETTIVO,SYSDATE,A_UTENTE);
+                     EXCEPTION WHEN OTHERS THEN
+                        RAISE_APPLICATION_ERROR(-20999,'Errore in inserimento valore per campo NOME del modello in tabella verticale. Errore: '||sqlerrm);
+                     END;
+                  END IF;
+               END IF;
+            END IF;
+       EXCEPTION WHEN OTHERS THEN
+            RAISE_APPLICATION_ERROR(-20999,'Errore in recupero/creazione valore per campo NOME del modello. Errore: '||sqlerrm);
+       END;  */
+       RETURN A_ID_QUERY;
+    EXCEPTION WHEN OTHERS THEN
+                ROLLBACK;
+                RAISE_APPLICATION_ERROR(-20999,'Attenzione! Errore in creazione query Area='||A_AREA||' / Cm='||A_MODELLO||' / Nome='||A_NOME_QUERY
+                                               ||'. Errore: '||sqlerrm);
+    END;
+    PROCEDURE ADDCAMPO(P_AREA VARCHAR2, P_MODELLO VARCHAR2, P_NOME_CAMPO VARCHAR2, P_VALORE CLOB)
+    AS
+    BEGIN
+      GDM_PROFILO.ADDCAMPO(P_AREA,P_MODELLO,P_NOME_CAMPO,P_VALORE);
+    END;
+    PROCEDURE ADDCAMPO(P_AREA VARCHAR2, P_MODELLO VARCHAR2, P_NOME_CAMPO VARCHAR2, P_VALORE NUMBER)
+    AS
+    BEGIN
+      GDM_PROFILO.ADDCAMPO(P_AREA,P_MODELLO,P_NOME_CAMPO,P_VALORE);
+    END;
+    PROCEDURE ADDCAMPO(P_AREA VARCHAR2, P_MODELLO VARCHAR2, P_NOME_CAMPO VARCHAR2, P_VALORE DATE)
+    AS
+    BEGIN
+      GDM_PROFILO.ADDCAMPO(P_AREA,P_MODELLO,P_NOME_CAMPO,P_VALORE);
+    END;
+    PROCEDURE RESETCAMPO(P_AREA VARCHAR2, P_MODELLO VARCHAR2, P_NOME_CAMPO VARCHAR2)
+    AS
+    BEGIN
+      GDM_PROFILO.RESETCAMPO(P_AREA,P_MODELLO,P_NOME_CAMPO);
+    END;
+    PROCEDURE RESETCAMPI
+    AS
+    BEGIN
+      GDM_PROFILO.RESETCAMPI();
+    END;
+END;
+/
+

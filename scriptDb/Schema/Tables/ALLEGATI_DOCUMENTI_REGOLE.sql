@@ -1,0 +1,18 @@
+CREATE TABLE ALLEGATI_DOCUMENTI_REGOLE
+(
+  AREA            VARCHAR2(200 BYTE),
+  CODICE_MODELLO  VARCHAR2(50 BYTE),
+  REGOLA_SQL      CLOB                          NOT NULL
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

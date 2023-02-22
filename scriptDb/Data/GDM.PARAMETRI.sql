@@ -1,0 +1,581 @@
+﻿Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('CODIFICA_XSS', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('VERIFICA_FILE', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('LINGUA_DEFAULT', '@DMSERVER@', 'I');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('QRYSERVICE_LIMIT', '@DMSERVER@', '1000');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('AREASTANDARD', '@STANDARD', '@STANDARD');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('CONTENT_TYPE', 'WORD', 'text/html; charset=windows-1252');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DMNOTES_CODICEBEGIN', '@STANDARD', '<C>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DMNOTES_CODICEEND', '@STANDARD', '</C>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DMNOTES_VALOREBEGIN', '@STANDARD', '<V>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DMNOTES_VALOREEND', '@STANDARD', '</V>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEFIELDBEGIN', 'WORD', 'DOCPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEFIELDEND', 'WORD', 'MERGEFORMAT');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETNAMEFIELDBEGIN', 'WORD', '7');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETNAMEFIELDEND', 'WORD', '10');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PARAM_TAG_BEGIN', '@STANDARD', '#@');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PARAM_TAG_END', '@STANDARD', '@#');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SEPARAVALORI', '@STANDARD', '#');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('HOST_DOMINIO', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SID_DOMINIO', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBODYBEGIN', 'WORD', '<body');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBODYEND', 'WORD', '</body>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGFIELDBEGIN', 'WORD', '<span');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGFIELDEND', 'WORD', '/span>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGHEADEND', 'WORD', '</head>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGIMGBEGIN', 'WORD', 'src="');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGIMGEND', 'WORD', '"');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTITLEBEGIN', 'WORD', '<TITLE>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTITLEEND', 'WORD', '</TITLE>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('URL_SERVER_DOMINO', '@STANDARD', 'http://');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WORDFIELDBEGIN', 'WORD', 'DOCPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WORDFIELDEND', 'WORD', 'MERGEFORMAT');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETMETAINFOFIELD', 'WORD', '7');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('CONTENT_TYPE', 'ADS', 'text/html; charset=windows-1252');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEFIELDBEGIN', 'ADS', '&lt;<!-- ADSPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEFIELDEND', 'ADS', 'ADSFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETNAMEFIELDBEGIN', 'ADS', '2');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETNAMEFIELDEND', 'ADS', '1');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBODYBEGIN', 'ADS', '<body');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBODYEND', 'ADS', '</body>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGFIELDBEGIN', 'ADS', '&lt;<!-- ADSTFB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGFIELDEND', 'ADS', '<!-- ADSTFE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGHEADEND', 'ADS', '</head>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGIMGBEGIN', 'ADS', 'src="');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGIMGEND', 'ADS', '"');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTITLEBEGIN', 'ADS', '<title>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTITLEEND', 'ADS', '</title>');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WORDFIELDBEGIN', 'ADS', 'DOCPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WORDFIELDEND', 'ADS', 'MERGEFORMAT');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OFFSETMETAINFOFIELD', 'ADS', '7');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('HOST_DOMINIO01', '@DOMINI', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SID_DOMINIO01', '@DOMINI', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('HOST_DOMINIO02', '@DOMINI', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SID_DOMINIO02', '@DOMINI', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('1', '@ERRORE', '1.gif');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('2', '@ERRORE', '2.gif');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('3', '@ERRORE', '3.gif');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DEBUG', '@STANDARD', '1');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COMPETENZE', '@STANDARD', '5');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGPAGEEND', 'ADS', '<!-- ADSTPE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ALIAS_JGDM', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEBLOCKBEGIN', 'ADS', '&lt;<!-- BLOCCOPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEBLOCKEND', 'ADS', 'BLOCCOFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBLOCKBEGIN', 'ADS', '&lt;<!-- ADSTBB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGBLOCKEND', 'ADS', '<!-- ADSTBE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGVISUALBEGIN', 'ADS', '&lt;<!-- ADSTVB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGVISUALEND', 'ADS', '<!-- ADSTVE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEVISUALEND', 'ADS', 'VISUALFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEVISUALBEGIN', 'ADS', '&lt;<!-- VISUALPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEVISUALFINEBEGIN', 'ADS', '&lt;<!-- VISUALFINEPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEVISUALFINEEND', 'ADS', 'VISUALFINEFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGVISUALFINEEND', 'ADS', '<!-- ADSTSE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGVISUALFINEBEGIN', 'ADS', '&lt;<!-- ADSTSB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGPAGEBEGIN', 'ADS', '&lt;<!-- ADSTPB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTABBEGIN', 'ADS', '&lt;<!-- ADSTTB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGTABEND', 'ADS', '<!-- ADSTTE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMETABBEGIN', 'ADS', '&lt;<!-- TABPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMETABEND', 'ADS', 'TABFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGPOPBEGIN', 'ADS', '&lt;<!-- ADSTCB -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TAGPOPEND', 'ADS', '<!-- ADSTCE -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEPOPBEGIN', 'ADS', '&lt;<!-- POPPROPERTY');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NAMEPOPEND', 'ADS', 'POPFORMAT -->');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SCANNER', '@STANDARD', 'NO');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('USE_INTERMEDIA', '@DMSERVER@', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('REBUILD_IMMEDIATE', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('LOG_SQL', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PRINT_WAREA', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PRINT_TREEVIEW', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PRINT_QUERY', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('CONTROLLO_CAMPI', 'ADS', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PULSANTI_DOCVIEW', '@DMSERVER@', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('RIGHE_WORKAREA', '@DMSERVER@', '10');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PARAM_COMPETENZE', '@STANDARD', 'AD4');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('STAMPA_TEMPO', '@STANDARD', '0');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('MIN_TIME_LOG', '@STANDARD', '0');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_PATH_CA', '@STANDARD', '/tomcat/ca/LISTACER_20080312.zip.p7m');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_HTTP_CRL', '@STANDARD', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ALLEG_SINGLE_SIGN_ON', '@STANDARD', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ALLEGATI_AUTO_SAVE', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('SCANSIONE_PDF_TIFF', '@STANDARD', 'TIFF');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('JDMS_LINK', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('TREE_MENU_CREA_DIS', '@DMSERVER@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('NOREPLACE_KOFAX_FILE', '@DMSERVER@', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('X_RESOLUTION', '@STANDARD', '200');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('Y_RESOLUTION', '@STANDARD', '200');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('PIXEL_TYPE', '@STANDARD', '2');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DUPLEX', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('UI_ENABLED', '@STANDARD', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('STAMPA_SELECT_RICERC', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('JDMS_TABFOLDER_DOC', '@DMSERVER@', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_MEMORIZZA_CRL', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_URL_VERIFICAWS', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('VERIFICA_CF', '@FIRMA', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COPIA_CONF_TESTO', '@STANDARD', 'COPIA CONFORME ALL''ORIGINALE');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COPIA_CONF_DIAGONALE', '@STANDARD', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COPIA_CONF_BASSO_SX', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COPIA_CONF_ALTO_DX', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COPIA_CONF_ALTO_SX', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ID_ENTE', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ID_APPLICAZIONE', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('RESPONSELINK_OK', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('RESPONSELINK_KO', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WS_DAFIRMARE', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('HTTP_FIRMATI', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('WS_FIRMATI', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('COMPRESS_FIRMATI', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DESC_APPLET1', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DESC_APPLET2', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DESC_APPLET3', '@UNIMATICA', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('GENERA_IMPRONTA', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_TIPO', '@STANDARD', 'PKCS7');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_PDF_VISIBILE', '@STANDARD', 'S');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_PDF_PAGINA', '@STANDARD', 'ULTIMA');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_PDF_POSIZIONE', '@STANDARD', 'BASSO_DX');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('MKPDF_LANDSCAPE', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DIM_MAX_ALL_BYTE', '@DMSERVER@', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('DIM_MAX_ALL_BYTE_ALT', '@DMSERVER@', 'Y');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ALLEGATI_AUTO_OPEN', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('ATTIVAZIONE_DELEGHE', '@WORKFLOW@', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('GENERAZIONE_OCR', '@STANDARD', 'N');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('OCR_EXTFILE', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('LIVELLO_ERRORE_CAMPI_VUOTI', '@STANDARD', '0');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('FIRMA_URL', '@STANDARD', 'http:///UploadDownload/firma.jsp?servletAddress=http:///UploadDownload/dmfirmaservlet&directory=&dataSource=jdbc/gdm');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('URL_FIRMA_UNIMATICA', '@UNIMATICA', 'http:///UploadDownload/firma.jsp?servletAddress=http:///UploadDownload/dmfirmaservlet&directory=&dataSource=jdbc/gdm');
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('MKPDF_PATH', '@STANDARD', NULL);
+Insert into PARAMETRI
+   (CODICE, TIPO_MODELLO, VALORE)
+ Values
+   ('REPORT_URL', '@STANDARD', 'http:///Reporter/Reporter');
+COMMIT;

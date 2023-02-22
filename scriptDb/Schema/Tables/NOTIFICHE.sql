@@ -1,0 +1,18 @@
+CREATE TABLE NOTIFICHE
+(
+  ID_NOTIFICA  NUMBER(10)                       NOT NULL,
+  UTENTE       VARCHAR2(8 BYTE),
+  ID_TIPODOC   NUMBER(10)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

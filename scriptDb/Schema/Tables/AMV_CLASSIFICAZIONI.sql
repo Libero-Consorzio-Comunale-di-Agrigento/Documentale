@@ -1,0 +1,22 @@
+CREATE TABLE AMV_CLASSIFICAZIONI
+(
+  ID_CLASSIFICAZIONE  NUMBER(10)                NOT NULL,
+  ID_CATEGORIA        NUMBER(10)                NOT NULL,
+  ID_ARGOMENTO        NUMBER(10)                NOT NULL,
+  NOTE                VARCHAR2(2000 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+COMMENT ON TABLE AMV_CLASSIFICAZIONI IS 'CLAS - Classificazione Categorie di Argomento';
+
+
+

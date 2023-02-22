@@ -1,0 +1,33 @@
+﻿Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (1, 'AAATVhAO2AAAArFAAA');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (2, 'AAATVhAO2AAAArFAAB');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (3, 'AAATVhAO2AAAArFAAC');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (4, 'AAATVhAO2AAAArFAAD');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (5, 'AAATVhAO2AAAArFAAE');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (6, 'AAATVhAO2AAAArFAAF');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (7, 'AAATVhAO2AAAArFAAG');
+Insert into DR$OGFI_OCRF_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (8, 'AAATVhAO2AAAArFAAH');
+COMMIT;

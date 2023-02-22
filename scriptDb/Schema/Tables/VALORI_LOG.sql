@@ -1,0 +1,22 @@
+CREATE TABLE VALORI_LOG
+(
+  ID_VALORE_LOG  NUMBER(10)                     NOT NULL,
+  ID_LOG         NUMBER(10)                     NOT NULL,
+  ID_VALORE      NUMBER(10),
+  VALORE_NUMERO  NUMBER(15,5),
+  VALORE_DATA    DATE,
+  VALORE_CLOB    CLOB,
+  COLONNA        VARCHAR2(100 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

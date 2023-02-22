@@ -1,0 +1,18 @@
+CREATE UNIQUE INDEX DR$VAL_STR_CAT01 ON DR$VAL_STR_CAT$I
+(DR$TOKEN, DR$TOKEN_TYPE, ID_CAMPO, DR$ROWID)
+TABLESPACE GDM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+COMPRESS 2;
+
+

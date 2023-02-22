@@ -1,0 +1,20 @@
+CREATE TABLE REGOLE
+(
+  ID_REGOLA    NUMBER(10)                       NOT NULL,
+  REGOLA       VARCHAR2(250 BYTE)               NOT NULL,
+  DESCRIZIONE  VARCHAR2(2000 BYTE)              NOT NULL,
+  CODICE_HTML  VARCHAR2(2000 BYTE)              NOT NULL,
+  CODICE_ADS   VARCHAR2(2000 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

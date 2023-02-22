@@ -1,0 +1,73 @@
+﻿Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (1, 'AAATX5AO2AAAAy9AAA');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (2, 'AAATX5AO2AAAAy9AAB');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (3, 'AAATX5AO2AAAAy9AAC');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (4, 'AAATX5AO2AAAAy9AAD');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (5, 'AAATX5AO2AAAAy9AAE');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (6, 'AAATX5AO2AAAAy9AAF');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (7, 'AAATX5AO2AAAAy9AAG');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (8, 'AAATX5AO2AAAAy9AAH');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (9, 'AAATX5AO2AAAAy9AAI');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (10, 'AAATX5AO2AAAAy9AAJ');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (11, 'AAATX5AO2AAAAy9AAK');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (12, 'AAATX5AO2AAAAy9AAL');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (13, 'AAATX5AO2AAAAy9AAM');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (14, 'AAATX5AO2AAAAy9AAN');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (15, 'AAATX5AO2AAAAy9AAO');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (16, 'AAATX5AO2AAAAy9AAP');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (17, 'AAATX5AO2AAAAy9AAQ');
+Insert into DR$VAL_CLOB_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (18, 'AAATX5AO2AAAAy9AAR');
+COMMIT;

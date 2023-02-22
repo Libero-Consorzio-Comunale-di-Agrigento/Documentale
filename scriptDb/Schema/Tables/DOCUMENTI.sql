@@ -1,0 +1,30 @@
+CREATE TABLE DOCUMENTI
+(
+  ID_DOCUMENTO          NUMBER(10)              NOT NULL,
+  ID_LIBRERIA           NUMBER(10)              NOT NULL,
+  ID_TIPODOC            NUMBER(10)              NOT NULL,
+  CODICE_RICHIESTA      VARCHAR2(100 BYTE),
+  AREA                  VARCHAR2(200 BYTE),
+  DATA_AGGIORNAMENTO    DATE                    NOT NULL,
+  UTENTE_AGGIORNAMENTO  VARCHAR2(8 BYTE)        NOT NULL,
+  ID_DOCUMENTO_PADRE    NUMBER(10),
+  STATO_DOCUMENTO       VARCHAR2(2 BYTE)        DEFAULT 'BO'                  NOT NULL,
+  CONSERVAZIONE         VARCHAR2(200 BYTE),
+  ARCHIVIAZIONE         VARCHAR2(200 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

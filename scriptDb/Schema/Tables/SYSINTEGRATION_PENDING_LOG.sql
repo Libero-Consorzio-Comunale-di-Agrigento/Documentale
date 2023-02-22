@@ -1,0 +1,30 @@
+CREATE TABLE SYSINTEGRATION_PENDING_LOG
+(
+  IDLOGPENDING  NUMBER(10)                      NOT NULL,
+  IDSYSPENDING  NUMBER(10),
+  DATELOG       DATE                            NOT NULL,
+  ACTION        VARCHAR2(1 BYTE)                NOT NULL,
+  ACTOR         VARCHAR2(500 BYTE),
+  "USER"        VARCHAR2(8 BYTE)                NOT NULL,
+  RESULT        VARCHAR2(2 BYTE)                NOT NULL,
+  ERRORSTRING   VARCHAR2(4000 BYTE)
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+COMMENT ON COLUMN SYSINTEGRATION_PENDING_LOG.ACTOR IS 'Oggetto che ha fatto l¿azione: es. nome dell¿action, nome del flusso¿.';
+
+COMMENT ON COLUMN SYSINTEGRATION_PENDING_LOG."USER" IS 'Utente che ha fatto l¿azione';
+
+COMMENT ON COLUMN SYSINTEGRATION_PENDING_LOG.ERRORSTRING IS 'Vuoto se Result ¿ OK';
+
+
+

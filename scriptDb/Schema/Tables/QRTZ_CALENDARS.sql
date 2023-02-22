@@ -1,0 +1,18 @@
+CREATE TABLE QRTZ_CALENDARS
+(
+  SCHED_NAME     VARCHAR2(120 BYTE)             NOT NULL,
+  CALENDAR_NAME  VARCHAR2(200 BYTE)             NOT NULL,
+  CALENDAR       BLOB                           NOT NULL
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

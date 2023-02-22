@@ -1,0 +1,26 @@
+CREATE TABLE REPOSITORYTEMP
+(
+  CODICE_RICHIESTA  VARCHAR2(100 BYTE)          NOT NULL,
+  CODICE_MODELLO    VARCHAR2(50 BYTE)           NOT NULL,
+  AREA              VARCHAR2(200 BYTE)          NOT NULL,
+  PROGRESSIVO       NUMBER                      DEFAULT 0                     NOT NULL,
+  DATO              VARCHAR2(30 BYTE)           NOT NULL,
+  VALORE            CLOB,
+  DATA_SCADENZA     DATE,
+  DATA_INSERIMENTO  DATE
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+COMMENT ON TABLE REPOSITORYTEMP IS 'Repository temporaneo dei dati';
+
+
+

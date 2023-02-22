@@ -1,0 +1,22 @@
+CREATE TABLE VERSIONI_DOCUMENTI
+(
+  ID_DOCUMENTO     NUMBER(10)                   NOT NULL,
+  VERSIONE         NUMBER(10)                   NOT NULL,
+  DATA_VERSIONE    DATE                         NOT NULL,
+  UTENTE_VERSIONE  VARCHAR2(8 BYTE)             NOT NULL,
+  STILE            VARCHAR2(50 BYTE),
+  CORPO_STILE      CLOB,
+  DOCUMENTO        CLOB
+)
+TABLESPACE GDM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            MAXSIZE          UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );
+
+

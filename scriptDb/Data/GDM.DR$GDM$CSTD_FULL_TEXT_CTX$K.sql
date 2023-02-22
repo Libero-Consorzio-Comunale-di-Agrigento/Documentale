@@ -1,0 +1,9 @@
+﻿Insert into DR$GDM$CSTD_FULL_TEXT_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (1, 'AAATR7AO2AAAAi1AAA');
+Insert into DR$GDM$CSTD_FULL_TEXT_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (2, 'AAATR7AO2AAAAi1AAB');
+COMMIT;

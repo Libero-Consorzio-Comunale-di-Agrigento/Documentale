@@ -1,0 +1,9 @@
+﻿Insert into DR$ADSORIZZ_FULL_TEXT_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (1, 'AAATORAO2AAAAfdAAA');
+Insert into DR$ADSORIZZ_FULL_TEXT_CTX$K
+   (DOCID, TEXTKEY)
+ Values
+   (2, 'AAATORAO2AAAAfdAAB');
+COMMIT;

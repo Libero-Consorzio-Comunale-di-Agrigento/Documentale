@@ -1,0 +1,83 @@
+CREATE OR REPLACE FUNCTION F_ALLINEA_ALLEGATI (
+   P_AREA     VARCHAR2,
+   P_CM       VARCHAR2,
+   P_CR       VARCHAR2,
+   P_IDDOC    VARCHAR2,
+   P_UTENTE   VARCHAR2,
+   P_DATA     DATE DEFAULT SYSDATE
+)
+   RETURN NUMBER
+IS
+   TMPVAR      NUMBER;
+   IDFORMATO   NUMBER;
+   ESISTE      NUMBER;
+   CURSOR C_TEMP
+   IS
+      SELECT   NOMEFILE,
+               SUBSTR (NOMEFILE, INSTR (NOMEFILE, '.', -1) + 1) ESTENSIONE,
+               ALLEGATO
+          FROM ALLEGATI_TEMP
+         WHERE AREA = P_AREA
+           AND CODICE_RICHIESTA = P_CR
+           AND CODICE_MODELLO = P_CM
+           AND UTENTE_AGGIORNAMENTO = P_UTENTE
+      ORDER BY NOMEFILE ASC;
+BEGIN
+   TMPVAR := 0;
+   DELETE OGGETTI_FILE WHERE ID_DOCUMENTO = TO_NUMBER(P_IDDOC) AND DA_CANCELLARE = 'S';
+   FOR CT IN C_TEMP
+   LOOP
+      BEGIN
+         BEGIN
+            SELECT ID_FORMATO
+              INTO IDFORMATO
+              FROM FORMATI_FILE
+             WHERE UPPER (NOME) = UPPER (CT.ESTENSIONE);
+         EXCEPTION
+            WHEN NO_DATA_FOUND
+            THEN
+               IDFORMATO := 0;
+            WHEN OTHERS
+            THEN
+               RAISE;
+         END;
+         SELECT COUNT (1)
+           INTO ESISTE
+           FROM OGGETTI_FILE
+          WHERE ID_DOCUMENTO = P_IDDOC AND FILENAME = CT.NOMEFILE;
+         IF (ESISTE = 0)
+         THEN
+            INSERT INTO OGGETTI_FILE
+                        (ID_OGGETTO_FILE, ID_DOCUMENTO, ID_FORMATO,
+                         FILENAME, TESTOOCR, ALLEGATO, DATA_AGGIORNAMENTO,
+                         UTENTE_AGGIORNAMENTO
+                        )
+                 VALUES (OGG_FILE_SQ.NEXTVAL, P_IDDOC, IDFORMATO,
+                         CT.NOMEFILE, CT.ALLEGATO, 'N', P_DATA,
+                         P_UTENTE
+                        );
+         ELSE
+            UPDATE OGGETTI_FILE
+               SET TESTOOCR = CT.ALLEGATO,
+                   DATA_AGGIORNAMENTO = P_DATA,
+                   UTENTE_AGGIORNAMENTO = P_UTENTE
+             WHERE ID_DOCUMENTO = P_IDDOC AND FILENAME = CT.NOMEFILE;
+         END IF;
+         TMPVAR := TMPVAR + 1;
+      END;
+   END LOOP;
+   DELETE      ALLEGATI_TEMP
+         WHERE AREA = P_AREA
+           AND CODICE_RICHIESTA = P_CR
+           AND CODICE_MODELLO = P_CM
+           AND UTENTE_AGGIORNAMENTO = P_UTENTE
+;
+   RETURN TMPVAR;
+EXCEPTION
+   WHEN OTHERS
+   THEN
+      -- CONSIDER LOGGING THE ERROR AND THEN RE-RAISE
+      RAISE;
+END F_ALLINEA_ALLEGATI;
+/
+

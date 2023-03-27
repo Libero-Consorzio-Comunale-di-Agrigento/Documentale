@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Implementation-Title: finmatica-dms
+Implementation-Version: 3.6.5.6_61
+Built-By: jenkins
+Specification-Vendor: Gruppo Finmatica
+Specification-Title: DMS
+Built-On: 6cf89843b381/10.0.7.10
+Implementation-Vendor: Gruppo Finmatica
+Git-Commit: ae55cd73212e6c68b070598d47b70294d37ebb22
+Git-Branch: master
+Build-Java: 1.8.0_221 (Oracle Corporation)
+Built-With: gradle-4.10.3, groovy-2.4.15
+Build-Tag: jenkins-AG-jsuite-DMS-master-61
+Build-Time: 2023-02-23T18:32:04+0100
+Build-Url: https://jenkins.finmatica.it/job/AG/job/jsuite/job/DMS/job/
+ master/61/
+Specification-Version: 3.6.5.6
+

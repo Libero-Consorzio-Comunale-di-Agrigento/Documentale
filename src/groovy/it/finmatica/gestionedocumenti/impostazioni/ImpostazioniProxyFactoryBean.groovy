@@ -1,0 +1,86 @@
+package it.finmatica.gestionedocumenti.impostazioni;
+
+import com.sun.star.auth.InvalidArgumentException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class ImpostazioniProxyFactoryBean extends AbstractFactoryBean<Object> implements InvocationHandler,
+    ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+    private Class<?> targetInterface;
+    private String impostazione;
+
+    public ImpostazioniProxyFactoryBean() {
+        this.setSingleton(true);
+    }
+
+    @Override
+    protected Object createInstance() throws Exception {
+        return Proxy.newProxyInstance(this.getClass().getClassLoader(), [targetInterface].toArray(new Class<?>[0]), this);
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return targetInterface;
+    }
+
+    public void setTargetInterface(String targetInterface) throws InvalidArgumentException {
+        try {
+            this.targetInterface = this.getClass().getClassLoader().loadClass(targetInterface);
+        } catch (ClassNotFoundException e) {
+            throw new InvalidArgumentException("Non trovo la classe: " + targetInterface, e);
+        }
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Object targetBean = getTargetBean();
+        if (targetBean != null) {
+            return method.invoke(targetBean, args);
+        }
+
+        // ritorno il default "false", 0, null
+        Class<?> returnType = method.getReturnType();
+
+        if (returnType == null) {
+            return null;
+        }
+
+        if (returnType.isAssignableFrom(boolean.class)) {
+            return false;
+        }
+
+        if (returnType.isAssignableFrom(int.class)) {
+            return -1;
+        }
+
+        return null;
+    }
+
+    public Object getTargetBean() {
+        String nomeBean = Impostazioni.valueOf(getImpostazione()).getValore();
+        if ("N".equals(nomeBean)) {
+            return null;
+        }
+        return applicationContext.getBean(nomeBean);
+    }
+
+    public String getImpostazione() {
+        return impostazione;
+    }
+
+    public void setImpostazione(String impostazione) {
+        this.impostazione = impostazione;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+}

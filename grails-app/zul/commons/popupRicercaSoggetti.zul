@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/atti.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('it.finmatica.commons.PopupRicercaSoggettiViewModel')"
+		border="normal" sizable="true" width="600px" height="400px" title=" ">
+
+		<h:div sclass="barraTitoloPagina">
+			<label class="titoloPagina" value="Ricerca Soggetti" />
+		</h:div>
+
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right">
+						<label value="Cognome" />
+					</cell>
+					<cell>
+						<textbox value="@bind(vm.cognome)" width="100%" />
+					</cell>
+					<cell align="right">
+						<label value="Nome" />
+					</cell>
+					<cell>
+						<textbox value="@bind(vm.nome)" width="100%" />
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="Codice Fiscale" />
+					</cell>
+					<cell>
+						<textbox value="@bind(vm.codiceFiscale)" width="100%" />
+					</cell>
+					<cell align="right">
+						<label value="Data di Nascita" />
+					</cell>
+					<cell>
+						<datebox value="@bind(vm.dataNascita)" width="100%" format="dd/MM/yyyy" />
+					</cell>
+				</row>
+				<row>
+					<cell colspan="3">
+						Tipo Ricerca:
+						<radiogroup selectedIndex="@load(vm.ricercaInterna ? 0 : 1)" selectedItem="@save(vm.ricercaInterna)">
+		     				<radio label="Ricerca in Struttura"   		value="@load(true)"  />
+				            <radio label="Ricerca su tutta l'Anagrafe" 	value="@load(false)" />
+			            </radiogroup>
+					</cell>
+					<cell colspan="1" align="right">
+						<button label="Cerca" image="/images/afc/16x16/search.png" onClick="@command('onCerca', paginate=false)"/>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+
+		<listbox vflex="1" model="@load(vm.listaSoggetti)" selectedItem="@bind(vm.soggetto)" emptyMessage="Nessun soggetto trovato">
+			<listhead>
+				<listheader label="Cognome" 		/>
+				<listheader label="Nome" 			/>
+				<listheader label="Codice Fiscale" 	/>
+				<listheader label="Data di Nascita" />
+				<listheader label="Utente" 			/>
+			</listhead>
+			<template name="model" var="soggetto">
+				<listitem>
+					<listcell label="@load(soggetto.cognome)" />
+					<listcell label="@load(soggetto.nome)" />
+					<listcell label="@load(soggetto.codiceFiscale)" />
+					<listcell label="@load(soggetto.dataNascita) @converter('formattedDate', format='dd/MM/yyyy')" />
+					<listcell label="@load(soggetto.utenteAd4.nominativo)" />
+				</listitem>
+			</template>
+		</listbox>
+
+		<paging activePage="@bind(vm.activePage)" pageSize="@load(vm.pageSize)" totalSize="@load(vm.totalSize)" onPaging="@command('onCerca', paginate=true)" />
+
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="Seleziona" onClick="@command('onSeleziona')" mold="trendy" image="/images/afc/16x16/save.png" disabled="@load(vm.soggetto eq null)"/>
+				<button label="Annulla"   onClick="@command('onAnnulla')" 	mold="trendy" image="/images/afc/16x16/close.png" />
+			</h:div>
+		</h:div>
+	</window>
+</zk>

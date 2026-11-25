@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+    <config-name>finmatica-gestione-documenti</config-name>
+
+    <language-config>
+        <addon-uri>/metainfo/zk/lang-addon-gestione-documenti.xml</addon-uri>
+    </language-config>
+</zk>
